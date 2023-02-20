@@ -4,12 +4,13 @@ import {
     productDetailsReducers,
     productListReducers,
 } from "./reducers/productReducers";
-import { userLoginReducer } from "./reducers/userReducers";
+import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
 
 const reducer = combineReducers({
     productList: productListReducers,
     productDetails: productDetailsReducers,
     cart: cartReducer,
     users: userLoginReducer,
+    registration: userRegisterReducer,
 });
 export default reducer;

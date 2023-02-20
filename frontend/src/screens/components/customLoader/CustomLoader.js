@@ -1,11 +1,7 @@
-import React from 'react';
-import './customLoader.css';
+import React from "react";
+import "./customLoader.css";
 const CustomLoader = () => {
-	return (
-		<div className="mx-auto mt-12 tracking-wider text-center">
-			Loading ......
-		</div>
-	);
+    return <div className='loader'></div>;
 };
 
 export default CustomLoader;
