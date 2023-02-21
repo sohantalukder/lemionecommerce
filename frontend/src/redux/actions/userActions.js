@@ -48,7 +48,7 @@ export const logout = () => (dispatch) => {
     dispatch({ type: USER_LOGOUT });
 };
 
-export const registration = (email, name, password) => async (dispatch) => {
+export const registration = (name, email, password) => async (dispatch) => {
     try {
         dispatch({
             type: USER_REGISTER_REQUEST,
@@ -58,13 +58,13 @@ export const registration = (email, name, password) => async (dispatch) => {
                 "Content-Type": "application/json ",
             },
         };
+        console.log(name, email, password);
         const res = await axios.post(
-            `/api/users/login`,
+            `/api/users`,
             { name, email, password },
             config
         );
-        if (res?.data?.response?.status.code === 200) {
-            console.log(res?.data?.response?.records);
+        if (res?.data?.response?.status.code === 201) {
             dispatch({
                 type: USER_REGISTER_SUCCESS,
                 payload: res?.data?.response?.records,

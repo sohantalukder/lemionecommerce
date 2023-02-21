@@ -18,7 +18,7 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const { email, password } = loginInfo;
-        if ((email, password)) {
+        if (email && password && !loading) {
             dispatch(login(email, password));
         }
     };
@@ -32,7 +32,7 @@ const Login = () => {
                         </h1>
                         <form
                             className='space-y-4 md:space-y-6'
-                            onSubmit={loading ? null : handleSubmit}
+                            onSubmit={handleSubmit}
                         >
                             <div>
                                 <TextInput
