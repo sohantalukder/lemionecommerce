@@ -140,14 +140,3 @@
 .dd-menu li:hover {
     background-color: #f6f6f6;
 }
-
-.dd-menu li a {
-    display: block;
-    margin: -10px -20px;
-    padding: 10px 20px;
-}
-
-.dd-menu li.divider {
-    padding: 0;
-    border-bottom: 1px solid #cccccc;
-}

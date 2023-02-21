@@ -18,7 +18,6 @@ const Register = () => {
             navigate("/");
         }
     }, [userInfo, navigate]);
-    console.log(userInfo);
     const HandleSubmit = (e) => {
         e.preventDefault();
         const { name, email, password, confirmPassword } = registrationInfo;

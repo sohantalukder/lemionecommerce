@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaBars, FaTimes, FaUser } from "react-icons/fa";
 import { HiShoppingCart } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../redux/actions/userActions";
 import "./header.css";
 const Header = () => {
@@ -13,6 +13,10 @@ const Header = () => {
     const dispatch = useDispatch();
     const logOutHandler = () => {
         dispatch(logout());
+    };
+    const navigate = useNavigate();
+    const goProfile = () => {
+        navigate("/profile");
     };
     return (
         <header className='header'>
@@ -60,7 +64,7 @@ const Header = () => {
                             />
 
                             <ul className='dd-menu'>
-                                <li>Profile</li>
+                                <li onClick={goProfile}>Profile</li>
                                 <li onClick={logOutHandler}>Log Out</li>
                             </ul>
                         </label>

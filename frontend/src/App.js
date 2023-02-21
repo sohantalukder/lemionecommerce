@@ -5,6 +5,7 @@ import Cart from "./screens/cart/Cart";
 import Footer from "./screens/components/Footer/Footer";
 import Header from "./screens/components/Header/Header";
 import Home from "./screens/Home/Home";
+import Profile from "./screens/Profile/Profile";
 import ViewProduct from "./screens/ViewProduct/ViewProduct";
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                         <Route path='/login' element={<Login />} />
                         <Route path='/register' element={<Register />} />
                         <Route path='/product/:id' element={<ViewProduct />} />
+                        <Route path='/profile' element={<Profile />} />
                         <Route path='/cart'>
                             <Route index element={<Cart />} />
                             <Route path=':id' element={<Cart />} />
