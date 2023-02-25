@@ -6,6 +6,7 @@ import Footer from "./screens/components/Footer/Footer";
 import Header from "./screens/components/Header/Header";
 import Home from "./screens/Home/Home";
 import Payment from "./screens/Payment/Payment";
+import PlaceOrder from "./screens/PlaceOrder/PlaceOrder";
 import Profile from "./screens/Profile/Profile";
 import Shipping from "./screens/Shipping/Shipping";
 import ViewProduct from "./screens/ViewProduct/ViewProduct";
@@ -55,6 +56,14 @@ function App() {
                             element={
                                 <PrivateRoute>
                                     <Payment />
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path='placeOrder'
+                            element={
+                                <PrivateRoute>
+                                    <PlaceOrder />
                                 </PrivateRoute>
                             }
                         />

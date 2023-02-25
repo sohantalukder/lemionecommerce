@@ -22,7 +22,7 @@ const Payment = () => {
             console.log("shippingData");
             navigate("/shipping");
         }
-    }, [state]);
+    }, [state, navigate]);
     return (
         <div className='py-8 md:py-12 max-w-xl container sm:px-6 lg:px-8  mx-auto px-5 xl:px-0'>
             <CheckoutSteps step1 step2 />
@@ -37,9 +37,9 @@ const Payment = () => {
                                 id='country-option-1'
                                 type='radio'
                                 name='countries'
-                                value='paypal'
+                                value='Paypal'
                                 className='h-4 w-4 border-gray-300 '
-                                checked={paymentMethod === "paypal" && true}
+                                checked={paymentMethod === "Paypal" && true}
                                 onChange={(e) =>
                                     setPaymentMethod(e.target.value)
                                 }
@@ -56,9 +56,9 @@ const Payment = () => {
                                 id='country-option-2'
                                 type='radio'
                                 name='countries'
-                                value='credit_card'
+                                value='Credit Card'
                                 checked={
-                                    paymentMethod === "credit_card" && true
+                                    paymentMethod === "Credit Card" && true
                                 }
                                 className='h-4 w-4 border-gray-300 '
                                 onChange={(e) =>
