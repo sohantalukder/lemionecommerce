@@ -3,12 +3,19 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {
+    getUserDetails,
+    updateUserProfile,
+} from "../../redux/actions/userActions";
 import Error from "../components/errorCard/Error";
 import TextInput from "../components/textInput/TextInput";
-const initialState = { name: "", email: "", password: "" };
+const initialState = { name: "", email: "", password: "", newPassword: "" };
 const Profile = () => {
     const [profileIno, setProfileInfo] = useState(initialState);
-    const { userInfo, loading, error } = useSelector((state) => state.users);
+    const userDetails = useSelector((state) => state.users);
+    const { userInfo, loading, error } = userDetails;
+    const { success } = useSelector((state) => state.userUpdateProfile);
+    console.log(success);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [message, setMessage] = useState("");
@@ -16,23 +23,28 @@ const Profile = () => {
     useEffect(() => {
         if (!userInfo) {
             navigate("/login");
-        } else if (userInfo) {
+        } else if (!userInfo || !userInfo?.name || success) {
+            dispatch(getUserDetails("profile"));
+        } else {
             setProfileInfo({
                 name: userInfo?.name,
                 email: userInfo?.email,
             });
         }
-    }, [userInfo, navigate]);
+    }, [userInfo, navigate, dispatch, success]);
     const HandleSubmit = (e) => {
         e.preventDefault();
-        const { name, email, password, confirmPassword } = profileIno;
-        if (name && email && password && confirmPassword && !loading) {
-            if (password === confirmPassword) {
-                setMessage("");
-                dispatch((name, email, password));
-            } else {
-                setMessage("Didn't match password to confirm password");
-            }
+        const { name, email, newPassword } = profileIno;
+        if (name && email && !loading) {
+            setMessage("");
+            dispatch(
+                updateUserProfile({
+                    id: userInfo._id,
+                    name,
+                    email,
+                    newPassword,
+                })
+            );
         }
     };
     return (
@@ -50,7 +62,7 @@ const Profile = () => {
                             required={true}
                             type={"text"}
                             name={"name"}
-                            value={profileIno.name}
+                            value={profileIno.name || ""}
                             onChange={(e) =>
                                 setProfileInfo({
                                     ...profileIno,
@@ -66,7 +78,7 @@ const Profile = () => {
                             required={true}
                             type={"email"}
                             name={"email"}
-                            value={profileIno.email}
+                            value={profileIno.email || ""}
                             onChange={(e) =>
                                 setProfileInfo({
                                     ...profileIno,
@@ -77,12 +89,11 @@ const Profile = () => {
                     </div>
                     <div>
                         <TextInput
-                            label={"Password"}
+                            label={"Current Password"}
                             placeholder={"••••••••"}
-                            required={true}
                             type={"password"}
                             name={"password"}
-                            value={profileIno.password}
+                            value={profileIno.password || ""}
                             onChange={(e) =>
                                 setProfileInfo({
                                     ...profileIno,
@@ -91,10 +102,32 @@ const Profile = () => {
                             }
                         />
                     </div>
+                    <div>
+                        <TextInput
+                            label={"New Password"}
+                            placeholder={"••••••••"}
+                            type={"password"}
+                            name={"newPassword"}
+                            value={profileIno.newPassword || ""}
+                            onChange={(e) =>
+                                setProfileInfo({
+                                    ...profileIno,
+                                    newPassword: e.target.value,
+                                })
+                            }
+                        />
+                    </div>
                     <Error
                         handleShow={setClosed}
                         show={closed}
                         message={message || error}
+                        type={"error"}
+                    />
+                    <Error
+                        handleShow={setClosed}
+                        show={closed}
+                        message={success && "Update your profile successfully"}
+                        type={"success"}
                     />
                     <button
                         type='submit'

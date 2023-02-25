@@ -11,11 +11,18 @@ const Header = () => {
     const users = useSelector((state) => state.users);
     const { userInfo } = users || {};
     const dispatch = useDispatch();
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+        setOpen((prevState) => !prevState);
+    };
     const logOutHandler = () => {
+        handleOpen();
         dispatch(logout());
     };
     const navigate = useNavigate();
     const goProfile = () => {
+        handleOpen();
         navigate("/profile");
     };
     return (
@@ -31,7 +38,7 @@ const Header = () => {
                         <Link to='/'>Home</Link>
                     </li>
                     <li>
-                        <Link to='/'>
+                        <Link to='/cart'>
                             <div className='flex space-x-1 items-center'>
                                 <HiShoppingCart
                                     size={20}
@@ -54,24 +61,16 @@ const Header = () => {
                             </Link>
                         </li>
                     ) : (
-                        <label className='dropdown'>
-                            <div className='dd-button'>{userInfo?.name}</div>
-
-                            <input
-                                type='checkbox'
-                                className='dd-input'
-                                id='test'
-                            />
-
-                            <ul className='dd-menu'>
+                        <li className='dropdown'>
+                            <div className='dd-button' onClick={handleOpen}>
+                                {userInfo?.name}
+                            </div>
+                            <ul className={`dd-menu ${!open && "hidden"}`}>
                                 <li onClick={goProfile}>Profile</li>
                                 <li onClick={logOutHandler}>Log Out</li>
                             </ul>
-                        </label>
+                        </li>
                     )}
-                    <li>
-                        <Link to='/'>Contact</Link>
-                    </li>
                 </ul>
 
                 <div className='hamburger' onClick={handleClick}>

@@ -9,6 +9,9 @@ import {
     USER_REGISTER_FAILED,
     USER_REGISTER_REQUEST,
     USER_REGISTER_SUCCESS,
+    USER_UPDATE_PROFILE_FAILED,
+    USER_UPDATE_PROFILE_REQUEST,
+    USER_UPDATE_PROFILE_SUCCESS,
 } from "../constants/userConstants";
 import axios from "axios";
 export const login = (email, password) => async (dispatch) => {
@@ -86,7 +89,8 @@ export const registration = (name, email, password) => async (dispatch) => {
     }
 };
 
-export const getUserDeails = (id) => async (dispatch, getState) => {
+export const getUserDetails = (id) => async (dispatch, getState) => {
+    const { users: { userInfo } = {} } = getState();
     try {
         dispatch({
             type: USER_DETAILS_REQUEST,
@@ -94,11 +98,11 @@ export const getUserDeails = (id) => async (dispatch, getState) => {
         const config = {
             headers: {
                 "Content-Type": "application/json ",
-                Authorization: `Bearer ${getState?.users?.userInfo?.token}`,
+                Authorization: `Bearer ${userInfo?.token}`,
             },
         };
         const res = await axios.get(`/api/users/${id}`, config);
-        if (res?.data?.response?.status.code === 201) {
+        if (res?.data?.response?.status.code === 200) {
             dispatch({
                 type: USER_DETAILS_SUCCESS,
                 payload: res?.data?.response?.records,
@@ -109,9 +113,35 @@ export const getUserDeails = (id) => async (dispatch, getState) => {
             });
         }
     } catch (error) {
-        console.log(error.response?.data?.response?.status?.message);
         dispatch({
             type: USER_DETAILS_FAILED,
+            payload: error.response?.data?.response?.status?.message,
+        });
+    }
+};
+
+export const updateUserProfile = (user) => async (dispatch, getState) => {
+    const { users: { userInfo } = {} } = getState();
+    try {
+        dispatch({
+            type: USER_UPDATE_PROFILE_REQUEST,
+        });
+        const config = {
+            headers: {
+                "Content-Type": "application/json ",
+                Authorization: `Bearer ${userInfo?.token}`,
+            },
+        };
+        const res = await axios.put(`/api/users/profile`, user, config);
+        if (res?.data?.response?.status.code === 200) {
+            dispatch({
+                type: USER_UPDATE_PROFILE_SUCCESS,
+                payload: res?.data?.response?.records,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: USER_UPDATE_PROFILE_FAILED,
             payload: error.response?.data?.response?.status?.message,
         });
     }

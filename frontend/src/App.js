@@ -7,6 +7,7 @@ import Header from "./screens/components/Header/Header";
 import Home from "./screens/Home/Home";
 import Profile from "./screens/Profile/Profile";
 import ViewProduct from "./screens/ViewProduct/ViewProduct";
+import PrivateRoute from "./utils/ProtectedRoute/ProtectedRoute";
 function App() {
     return (
         <div className='App'>
@@ -22,8 +23,22 @@ function App() {
                         <Route path='/product/:id' element={<ViewProduct />} />
                         <Route path='/profile' element={<Profile />} />
                         <Route path='/cart'>
-                            <Route index element={<Cart />} />
-                            <Route path=':id' element={<Cart />} />
+                            <Route
+                                index
+                                element={
+                                    <PrivateRoute>
+                                        <Cart />
+                                    </PrivateRoute>
+                                }
+                            />
+                            <Route
+                                path=':id'
+                                element={
+                                    <PrivateRoute>
+                                        <Cart />
+                                    </PrivateRoute>
+                                }
+                            />
                         </Route>
                     </Routes>
                 </main>
