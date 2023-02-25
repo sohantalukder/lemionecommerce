@@ -6,6 +6,7 @@ import Footer from "./screens/components/Footer/Footer";
 import Header from "./screens/components/Header/Header";
 import Home from "./screens/Home/Home";
 import Profile from "./screens/Profile/Profile";
+import Shipping from "./screens/Shipping/Shipping";
 import ViewProduct from "./screens/ViewProduct/ViewProduct";
 import PrivateRoute from "./utils/ProtectedRoute/ProtectedRoute";
 function App() {
@@ -40,6 +41,14 @@ function App() {
                                 }
                             />
                         </Route>
+                        <Route
+                            path='shipping'
+                            element={
+                                <PrivateRoute>
+                                    <Shipping />
+                                </PrivateRoute>
+                            }
+                        />
                     </Routes>
                 </main>
                 <Footer />
