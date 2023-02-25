@@ -5,6 +5,7 @@ import Cart from "./screens/cart/Cart";
 import Footer from "./screens/components/Footer/Footer";
 import Header from "./screens/components/Header/Header";
 import Home from "./screens/Home/Home";
+import Payment from "./screens/Payment/Payment";
 import Profile from "./screens/Profile/Profile";
 import Shipping from "./screens/Shipping/Shipping";
 import ViewProduct from "./screens/ViewProduct/ViewProduct";
@@ -46,6 +47,14 @@ function App() {
                             element={
                                 <PrivateRoute>
                                     <Shipping />
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path='payment'
+                            element={
+                                <PrivateRoute>
+                                    <Payment />
                                 </PrivateRoute>
                             }
                         />

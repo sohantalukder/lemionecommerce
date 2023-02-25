@@ -17,7 +17,9 @@ const Shipping = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(saveShippingData({ address, city, postalCode, country }));
-        navigate("/payment");
+        navigate("/payment", {
+            state: { address, city, postalCode, country },
+        });
     };
     return (
         <div className='py-8 md:py-12 max-w-xl container sm:px-6 lg:px-8  mx-auto px-5 xl:px-0'>
