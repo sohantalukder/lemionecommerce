@@ -3,6 +3,7 @@ import { cartReducer } from "./reducers/cartReducers";
 import {
     orderCreateReducer,
     orderDetailsReducer,
+    orderPayReducer,
 } from "./reducers/orderReducer";
 import {
     productDetailsReducers,
@@ -25,5 +26,6 @@ const reducer = combineReducers({
     userUpdateProfile: userUpdateProfileReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
+    orderPay: orderPayReducer,
 });
 export default reducer;

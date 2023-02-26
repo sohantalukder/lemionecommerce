@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getOrderDetails } from "../../redux/actions/orderActions";
 import CustomLoader from "../components/customLoader/CustomLoader";
 import Error from "../components/errorCard/Error";
