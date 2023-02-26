@@ -9,7 +9,6 @@ export const cartReducer = (
     state = { cartItems: [], shippingAddress: {}, paymentMethod: "" },
     action
 ) => {
-    console.log(action.payload);
     switch (action.type) {
         case CART_ADD_ITEM:
             const item = action.payload;

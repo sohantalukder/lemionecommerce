@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
+import { response } from "../utls/generateResponse.js";
 const addOrderItems = asyncHandler(async (req, res) => {
     const {
         orderItems,
@@ -24,9 +25,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
             totalPrice,
         });
         const createdOrder = await order.save();
-        res.status(201).json(
-            response(201, "Order Created", { records: { createdOrder } })
-        );
+        res.status(201).json(response(201, "Order Created", { createdOrder }));
     }
 });
 

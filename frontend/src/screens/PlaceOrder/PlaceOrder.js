@@ -1,10 +1,16 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps/CheckoutSteps";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
+import { createOrder } from "../../redux/actions/orderActions";
+import Error from "../components/errorCard/Error";
+import { useState } from "react";
 const PlaceOrder = () => {
+    const dispatch = useDispatch();
     const cart = useSelector((state) => state.cart);
+    const navigate = useNavigate();
+    const [show, setShow] = useState(true);
     cart.itemsPrice = (cart?.cartItems || [])
         .reduce((acc, item) => acc + item.qty * item.price, 0)
         .toFixed(2);
@@ -18,10 +24,29 @@ const PlaceOrder = () => {
         Number(cart.shippingPrice) +
         Number(cart.taxPrice)
     ).toFixed(2);
+    const { order, success, error, loading } =
+        useSelector((state) => state.orderCreate) || {};
+    const placeOrderHandler = () => {
+        dispatch(
+            createOrder({
+                orderItems: cart?.cartItems,
+                shippingAddress: cart?.shippingAddress,
+                paymentMethod: cart?.paymentMethod,
+                itemsPrice: cart?.itemsPrice,
+                shippingPrice: cart?.shippingPrice,
+                taxPrice: cart?.taxPrice,
+                totalPrice: cart.totalPrice,
+            })
+        );
+    };
+    useEffect(() => {
+        if (success) {
+            navigate(`/order/${order?._id}`);
+        }
+    }, [success, navigate, order]);
     return (
         <div className='py-8 md:py-12 max-w-7xl container sm:px-6 lg:px-8  mx-auto px-5 xl:px-0'>
             <div className='max-w-xl mx-auto'>
-                {" "}
                 <CheckoutSteps step1 step2 step3 />
             </div>
             <div className='grid grid-cols-1 md:grid-cols-4  gap-4 items-start overflow-hidden'>
@@ -69,8 +94,11 @@ const PlaceOrder = () => {
                             <>
                                 <div>
                                     {cart?.cartItems.map((item) => (
-                                        <>
-                                            <div className='flex space-x-2'>
+                                        <div key={item?.product}>
+                                            <div
+                                                className='flex space-x-2'
+                                                key={item?.product}
+                                            >
                                                 <div className='w-8 h-8'>
                                                     <img
                                                         src={item?.image}
@@ -91,7 +119,7 @@ const PlaceOrder = () => {
                                                 </div>
                                             </div>
                                             <hr className='my-3' />
-                                        </>
+                                        </div>
                                     ))}
                                 </div>
                             </>
@@ -117,13 +145,17 @@ const PlaceOrder = () => {
                             <p>Total</p>
                             <span>$ {cart?.totalPrice}</span>
                         </h1>
-
+                        <Error
+                            message={error}
+                            show={show}
+                            handleShow={setShow}
+                        />
                         <button
                             disabled={cart?.cartItems?.length === 0}
-                            // onClick={handleCheckout}
+                            onClick={!loading ? placeOrderHandler : null}
                             className='px-3 py-2 bg-black text-white w-full'
                         >
-                            Place Order
+                            {loading ? "Loading" : "Place Order"}
                         </button>
                     </div>
                 </div>
