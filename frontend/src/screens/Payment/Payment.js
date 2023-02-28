@@ -19,7 +19,6 @@ const Payment = () => {
 
     useEffect(() => {
         if (!state) {
-            console.log("shippingData");
             navigate("/shipping");
         }
     }, [state, navigate]);

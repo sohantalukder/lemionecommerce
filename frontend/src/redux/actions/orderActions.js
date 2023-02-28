@@ -69,17 +69,19 @@ export const payOrder =
             dispatch({
                 type: ORDER_PAY_REQUEST,
             });
-            const config = {
+            const res = await fetch(`/api/orders/${orderId}/pay`, {
+                method: "PUT",
                 headers: {
-                    "Content-Type": "application.json",
+                    "content-type": "application/json",
+                    Accept: "application/json",
                     Authorization: `Bearer ${userInfo?.token}`,
                 },
-            };
-            const res = await axios.put(
-                `/api/orders/${orderId}/pay`,
-                paymentResult,
-                config
-            );
+                body: JSON.stringify(paymentResult),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    return data;
+                });
             if (res?.data?.response?.status.code === 200) {
                 dispatch({
                     type: ORDER_PAY_SUCCESS,

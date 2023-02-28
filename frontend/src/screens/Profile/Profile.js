@@ -15,7 +15,6 @@ const Profile = () => {
     const userDetails = useSelector((state) => state.users);
     const { userInfo, loading, error } = userDetails;
     const { success } = useSelector((state) => state.userUpdateProfile);
-    console.log(success);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [message, setMessage] = useState("");
