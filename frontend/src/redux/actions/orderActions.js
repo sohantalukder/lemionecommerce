@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+    MY_ORDERS_LIST_FAILED,
+    MY_ORDERS_LIST_REQUEST,
+    MY_ORDERS_LIST_SUCCESS,
     ORDER_CREATE_FAILED,
     ORDER_CREATE_REQUEST,
     ORDER_CREATE_SUCCESS,
@@ -95,3 +98,29 @@ export const payOrder =
             });
         }
     };
+
+export const myOrdersList = () => async (dispatch, getState) => {
+    const { users: { userInfo } = {} } = getState();
+    try {
+        dispatch({
+            type: MY_ORDERS_LIST_REQUEST,
+        });
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo?.token}`,
+            },
+        };
+        const res = await axios.get(`/api/orders/myOrders`, config);
+        if (res?.data?.response?.status.code === 200) {
+            dispatch({
+                type: MY_ORDERS_LIST_SUCCESS,
+                payload: res?.data?.response?.records,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: MY_ORDERS_LIST_FAILED,
+            payload: error.response?.data?.response?.status?.message,
+        });
+    }
+};
