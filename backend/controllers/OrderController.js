@@ -61,7 +61,8 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 });
 
 const getMyOrders = asyncHandler(async (req, res) => {
-    const orders = await Order.find({ user: req.user._id });
+    const sort = { _id: -1 };
+    const orders = await Order.find({ user: req.user._id }).sort(sort);
     if (orders.length > 0) {
         res.status(200).json(response(200, "Success", orders));
     } else {

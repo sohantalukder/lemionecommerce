@@ -2,19 +2,28 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { myOrdersList } from "../../redux/actions/orderActions";
+import { AiFillCloseCircle } from "react-icons/ai";
 import {
     getUserDetails,
     updateUserProfile,
 } from "../../redux/actions/userActions";
+import CustomLoader from "../components/customLoader/CustomLoader";
 import Error from "../components/errorCard/Error";
 import TextInput from "../components/textInput/TextInput";
+import { USER_UPDATE_PROFILE_RESET } from "../../redux/constants/userConstants";
 const initialState = { name: "", email: "", password: "", newPassword: "" };
 const Profile = () => {
     const [profileIno, setProfileInfo] = useState(initialState);
     const userDetails = useSelector((state) => state.users);
     const { userInfo, loading, error } = userDetails;
     const { success } = useSelector((state) => state.userUpdateProfile);
+    const {
+        orders,
+        loading: orderLoading,
+        error: orderError,
+    } = useSelector((state) => state.myOrdersList);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [message, setMessage] = useState("");
@@ -23,12 +32,15 @@ const Profile = () => {
         if (!userInfo) {
             navigate("/login");
         } else if (!userInfo || !userInfo?.name || success) {
+            dispatch({ type: USER_UPDATE_PROFILE_RESET });
             dispatch(getUserDetails("profile"));
+            dispatch(myOrdersList());
         } else {
             setProfileInfo({
                 name: userInfo?.name,
                 email: userInfo?.email,
             });
+            dispatch(myOrdersList());
         }
     }, [userInfo, navigate, dispatch, success]);
     const HandleSubmit = (e) => {
@@ -46,6 +58,8 @@ const Profile = () => {
             );
         }
     };
+    const [show, setShow] = useState(true);
+    console.log(orders);
     return (
         <div className='py-8 md:py-12 max-w-7xl container sm:px-6 lg:px-8  mx-auto px-5 xl:px-0 flex md:flex-row flex-col gap-12'>
             <div className='md:w-[30%]'>
@@ -136,8 +150,106 @@ const Profile = () => {
                     </button>
                 </form>
             </div>
-            <div>
+            <div className='w-full'>
                 <h1 className='text-xl font-bold'>My Orders</h1>
+                {orderLoading ? (
+                    <div className='mt-8 md:mt-12 mx-auto'>
+                        <CustomLoader />
+                    </div>
+                ) : orderError ? (
+                    <Error
+                        show={show}
+                        handleShow={setShow}
+                        message={orderError}
+                    />
+                ) : (
+                    <div class='relative overflow-x-auto mt-8 md:mt-12 '>
+                        {orders?.length === 0 ? (
+                            <p>No Orders found</p>
+                        ) : (
+                            <table class='w-full text-sm text-left text-gray-500 '>
+                                <thead class='text-xs text-gray-700 uppercase bg-gray-50  '>
+                                    <tr>
+                                        <th scope='col' class='px-6 py-3'>
+                                            ID
+                                        </th>
+                                        <th scope='col' class='px-6 py-3'>
+                                            Date
+                                        </th>
+                                        <th scope='col' class='px-6 py-3'>
+                                            Total
+                                        </th>
+                                        <th scope='col' class='px-6 py-3'>
+                                            Paid
+                                        </th>
+                                        <th scope='col' class='px-6 py-3'>
+                                            Delivered
+                                        </th>
+                                        <th scope='col' class='px-6 py-3'>
+                                            Details
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {orders?.map((order) => (
+                                        <tr
+                                            class='bg-white border-b '
+                                            key={order?._id}
+                                        >
+                                            <th
+                                                scope='row'
+                                                class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap '
+                                            >
+                                                {order?._id}
+                                            </th>
+                                            <td class='px-6 py-4'>
+                                                {order?.createdAt?.substring(
+                                                    0,
+                                                    10
+                                                )}
+                                            </td>
+                                            <td class='px-6 py-4'>
+                                                {order?.totalPrice}
+                                            </td>
+                                            <td class='px-6 py-4'>
+                                                {order?.isPaid ? (
+                                                    order?.paidAt.substring(
+                                                        0,
+                                                        10
+                                                    )
+                                                ) : (
+                                                    <AiFillCloseCircle
+                                                        style={{ color: "red" }}
+                                                    />
+                                                )}
+                                            </td>
+                                            <td class='px-6 py-4'>
+                                                {order?.isDelivered ? (
+                                                    order?.deliveredAt.substring(
+                                                        0,
+                                                        10
+                                                    )
+                                                ) : (
+                                                    <AiFillCloseCircle
+                                                        style={{ color: "red" }}
+                                                    />
+                                                )}
+                                            </td>
+                                            <td className='px-6 py-4'>
+                                                <Link
+                                                    to={`/order/${order?._id}`}
+                                                    className='underline'
+                                                >
+                                                    Details
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -1,7 +1,8 @@
 import asyncHandler from "express-async-handler";
 import Product from "../models/productsModel.js";
 const getProducts = asyncHandler(async (req, res) => {
-    const products = await Product.find({});
+    const sort = { _id: -1 };
+    const products = await Product.find({}).sort(sort);
     res.json(products);
 });
 
