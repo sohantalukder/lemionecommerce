@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AllUsers from "./screens/AllUsers/AllUsers";
 import Login from "./screens/authentication/Login";
 import Register from "./screens/authentication/Register";
 import Cart from "./screens/cart/Cart";
@@ -11,6 +12,7 @@ import PlaceOrder from "./screens/PlaceOrder/PlaceOrder";
 import Profile from "./screens/Profile/Profile";
 import Shipping from "./screens/Shipping/Shipping";
 import ViewProduct from "./screens/ViewProduct/ViewProduct";
+import AdminProtectedRoute from "./utils/ProtectedRoute/AdminProtectedRoute";
 import PrivateRoute from "./utils/ProtectedRoute/ProtectedRoute";
 function App() {
     return (
@@ -74,6 +76,14 @@ function App() {
                                 <PrivateRoute>
                                     <Order />
                                 </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path='/admin/users'
+                            element={
+                                <AdminProtectedRoute>
+                                    <AllUsers />
+                                </AdminProtectedRoute>
                             }
                         />
                     </Routes>

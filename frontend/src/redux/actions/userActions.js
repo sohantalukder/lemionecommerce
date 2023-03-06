@@ -3,6 +3,10 @@ import {
     USER_DETAILS_REQUEST,
     USER_DETAILS_RESET,
     USER_DETAILS_SUCCESS,
+    USER_LIST_FAILED,
+    USER_LIST_REQUEST,
+    USER_LIST_RESET,
+    USER_LIST_SUCCESS,
     USER_LOGIN_FAILED,
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
@@ -54,6 +58,7 @@ export const logout = () => (dispatch) => {
     dispatch({ type: USER_LOGOUT });
     dispatch({ type: USER_DETAILS_RESET });
     dispatch({ type: MY_ORDERS_LIST_RESET });
+    dispatch({ type: USER_LIST_RESET });
 };
 
 export const registration = (name, email, password) => async (dispatch) => {
@@ -146,6 +151,33 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: USER_UPDATE_PROFILE_FAILED,
+            payload: error.response?.data?.response?.status?.message,
+        });
+    }
+};
+
+export const listUsers = (user) => async (dispatch, getState) => {
+    const { users: { userInfo } = {} } = getState();
+    try {
+        dispatch({
+            type: USER_LIST_REQUEST,
+        });
+        const config = {
+            headers: {
+                "Content-Type": "application/json ",
+                Authorization: `Bearer ${userInfo?.token}`,
+            },
+        };
+        const res = await axios.get(`/api/users`, config);
+        if (res?.data?.response?.status.code === 200) {
+            dispatch({
+                type: USER_LIST_SUCCESS,
+                payload: res?.data?.response?.records,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: USER_LIST_FAILED,
             payload: error.response?.data?.response?.status?.message,
         });
     }

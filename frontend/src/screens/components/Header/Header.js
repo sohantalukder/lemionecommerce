@@ -13,17 +13,21 @@ const Header = () => {
     const dispatch = useDispatch();
 
     const [open, setOpen] = useState(false);
+    const [adminOpen, setAdminOpen] = useState(false);
     const handleOpen = () => {
         setOpen((prevState) => !prevState);
+    };
+    const handleAdminOpen = () => {
+        setAdminOpen((prevState) => !prevState);
     };
     const logOutHandler = () => {
         handleOpen();
         dispatch(logout());
     };
     const navigate = useNavigate();
-    const goProfile = () => {
-        handleOpen();
-        navigate("/profile");
+    const goProfile = (routeName, admin) => {
+        !admin ? handleOpen() : handleAdminOpen();
+        navigate(routeName);
     };
     return (
         <header className='header'>
@@ -66,8 +70,43 @@ const Header = () => {
                                 {userInfo?.name}
                             </div>
                             <ul className={`dd-menu ${!open && "hidden"}`}>
-                                <li onClick={goProfile}>Profile</li>
+                                <li onClick={() => goProfile("/profile")}>
+                                    Profile
+                                </li>
                                 <li onClick={logOutHandler}>Log Out</li>
+                            </ul>
+                        </li>
+                    )}
+                    {userInfo && userInfo?.isAdmin && (
+                        <li className='dropdown1'>
+                            <div
+                                className='dd-button'
+                                onClick={handleAdminOpen}
+                            >
+                                {"Admin"}
+                            </div>
+                            <ul className={`dd-menu ${!adminOpen && "hidden"}`}>
+                                <li
+                                    onClick={() =>
+                                        goProfile("/admin/users", "admin")
+                                    }
+                                >
+                                    Users
+                                </li>
+                                <li
+                                    onClick={() =>
+                                        goProfile("/admin/products", "admin")
+                                    }
+                                >
+                                    Products
+                                </li>
+                                <li
+                                    onClick={() =>
+                                        goProfile("/admin/orders", "admin")
+                                    }
+                                >
+                                    Orders
+                                </li>
                             </ul>
                         </li>
                     )}
