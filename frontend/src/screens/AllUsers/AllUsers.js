@@ -7,8 +7,11 @@ import { AiFillCloseCircle, AiTwotoneEdit } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 const AllUsers = () => {
     const dispatch = useDispatch();
+    const { userInfo } = useSelector((state) => state.users);
     const {
         users: { users },
         loading,
@@ -17,8 +20,17 @@ const AllUsers = () => {
     useEffect(() => {
         dispatch(listUsers());
     }, [dispatch]);
-    const deleteHandler = (id) => {
-        console.log("delete");
+    const deleteHandler = async (id) => {
+        const config = {
+            headers: {
+                "Content-Type": "application/json ",
+                Authorization: `Bearer ${userInfo?.token}`,
+            },
+        };
+        const res = await axios.delete(`/api/users/${id}`, config);
+        if (res?.data?.response?.status?.code === 200) {
+            toast.success(res?.data?.response?.status?.message);
+        }
     };
     return (
         <div className='py-8 md:py-12 max-w-7xl container sm:px-6 lg:px-8  mx-auto px-5 xl:px-0'>
