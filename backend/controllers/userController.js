@@ -88,4 +88,18 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     }
 });
 
-export { authUser, getUserProfile, registerUser, updateUserProfile };
+const getUsers = asyncHandler(async (req, res) => {
+    const sort = { _id: -1 };
+    const users = await User.find({}).sort(sort);
+    if (users?.length > 0) {
+        res.status(200).json(
+            response(200, "Ok", {
+                users,
+            })
+        );
+    } else {
+        res.status(404).json(response(404, "Users not found!", []));
+    }
+});
+
+export { authUser, getUserProfile, registerUser, updateUserProfile, getUsers };
