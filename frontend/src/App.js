@@ -14,12 +14,14 @@ import Shipping from "./screens/Shipping/Shipping";
 import ViewProduct from "./screens/ViewProduct/ViewProduct";
 import AdminProtectedRoute from "./utils/ProtectedRoute/AdminProtectedRoute";
 import PrivateRoute from "./utils/ProtectedRoute/ProtectedRoute";
+import { Toaster } from "react-hot-toast";
 function App() {
     return (
         <div className='App'>
             <BrowserRouter>
                 <Header />
                 <main className='App-header'>
+                    <Toaster position='top-right' reverseOrder={false} />
                     <Routes>
                         {/* <Home /> */}
                         <Route exact path='/' element={<Home />} />
