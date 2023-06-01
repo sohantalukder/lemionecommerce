@@ -163,29 +163,29 @@ const Profile = () => {
                         message={orderError}
                     />
                 ) : (
-                    <div class='relative overflow-x-auto mt-8 md:mt-12 '>
+                    <div className='relative overflow-x-auto mt-8 md:mt-12 '>
                         {orders?.length === 0 ? (
                             <p>No Orders found</p>
                         ) : (
-                            <table class='w-full text-sm text-left text-gray-500 '>
-                                <thead class='text-xs text-gray-700 uppercase bg-gray-50  '>
+                            <table className='w-full text-sm text-left text-gray-500 '>
+                                <thead className='text-xs text-gray-700 uppercase bg-gray-50  '>
                                     <tr>
-                                        <th scope='col' class='px-6 py-3'>
+                                        <th scope='col' className='px-6 py-3'>
                                             ID
                                         </th>
-                                        <th scope='col' class='px-6 py-3'>
+                                        <th scope='col' className='px-6 py-3'>
                                             Date
                                         </th>
-                                        <th scope='col' class='px-6 py-3'>
+                                        <th scope='col' className='px-6 py-3'>
                                             Total
                                         </th>
-                                        <th scope='col' class='px-6 py-3'>
+                                        <th scope='col' className='px-6 py-3'>
                                             Paid
                                         </th>
-                                        <th scope='col' class='px-6 py-3'>
+                                        <th scope='col' className='px-6 py-3'>
                                             Delivered
                                         </th>
-                                        <th scope='col' class='px-6 py-3'>
+                                        <th scope='col' className='px-6 py-3'>
                                             Details
                                         </th>
                                     </tr>
@@ -193,25 +193,25 @@ const Profile = () => {
                                 <tbody>
                                     {orders?.map((order) => (
                                         <tr
-                                            class='bg-white border-b '
+                                            className='bg-white border-b '
                                             key={order?._id}
                                         >
                                             <th
                                                 scope='row'
-                                                class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap '
+                                                className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap '
                                             >
                                                 {order?._id}
                                             </th>
-                                            <td class='px-6 py-4'>
+                                            <td className='px-6 py-4'>
                                                 {order?.createdAt?.substring(
                                                     0,
                                                     10
                                                 )}
                                             </td>
-                                            <td class='px-6 py-4'>
+                                            <td className='px-6 py-4'>
                                                 {order?.totalPrice}
                                             </td>
-                                            <td class='px-6 py-4'>
+                                            <td className='px-6 py-4'>
                                                 {order?.isPaid ? (
                                                     order?.paidAt.substring(
                                                         0,
@@ -223,7 +223,7 @@ const Profile = () => {
                                                     />
                                                 )}
                                             </td>
-                                            <td class='px-6 py-4'>
+                                            <td className='px-6 py-4'>
                                                 {order?.isDelivered ? (
                                                     order?.deliveredAt.substring(
                                                         0,
