@@ -208,7 +208,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
 
         const res = await axios.delete(`/api/users/${id}`, config);
         if (res?.response?.status?.code === 200) {
-            toastc.success(res?.data?.response?.status?.message);
+            toast.success(res?.data?.response?.status?.message);
             dispatch({ type: USER_DELETE_SUCCESS });
         }
     } catch (error) {
