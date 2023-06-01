@@ -20,7 +20,7 @@ const importData = async () => {
         const createdUser = await User.insertMany(users);
         const adminUser = createdUser[0]._id;
 
-        const simpleProducts = products.map((product) => {
+        const simpleProducts = products?.map((product) => {
             return { ...product, user: adminUser };
         });
         await Product.insertMany(simpleProducts);
