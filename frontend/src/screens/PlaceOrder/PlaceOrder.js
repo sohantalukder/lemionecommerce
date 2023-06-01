@@ -93,7 +93,7 @@ const PlaceOrder = () => {
                         ) : (
                             <>
                                 <div>
-                                    {cart?.cartItems.map((item) => (
+                                    {cart?.cartItems?.map((item) => (
                                         <div key={item?.product}>
                                             <div
                                                 className='flex space-x-2'

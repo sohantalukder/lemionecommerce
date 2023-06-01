@@ -108,7 +108,7 @@ const Cart = () => {
                                                             ...Array(
                                                                 item?.countInStock
                                                             )?.keys(),
-                                                        ].map((x) => (
+                                                        ]?.map((x) => (
                                                             <option
                                                                 key={x + 1}
                                                                 value={x + 1}
